@@ -1,10 +1,71 @@
-# OpenGPU assembly
+# OpenTPU assembly
 
-v0 - v15  -> 16 64 by 64 bit vector registers
-r0 - r15  -> 16 64 scalar registers
+v0 - v15  -> 16 16 by 16 bit vector registers
+r0 - r15  -> 16 16 scalar registers
 a0 - a15  -> 16 12 bit address registers
 mb        -> 16 bit memory bank select register
+x@Vy      -> Point x at Vy
+.label    -> Marks subroutine
+rl        -> 4 bit, sets the maximum length for vector registers
 
-To be able to have a larger ISA than a mere 16 instructions, we use the 'extend' instruction. When used, it executes the next line like an extended instruction instead of an ordinary instruction. So you don't go insane programming in OpenGPU ASM, the assembler adds extends for you.
+To be able to have a larger ISA than a mere 16 instructions, we use the 'extendx' instructions. 
+When used, it executes the next line like an extended instruction instead of an ordinary instruction. 
+So you don't go insane programming in OpenGPU ASM, the assembler adds extends for you.
 
-0  
+# Ordinary Instruction Set
+
+0  mov src -> dst      Move src (rX/aX/mb/x@Vy) into dst (rX/aX/mb/x@Vy)
+1  rmov src -> dst     Move src (vX) into dst (vX)
+2  li imm16 -> dst     Load imm16 into dst (rX/aX/mb/x@Vy)
+3  broad src -> dst    Set all values in dst (vX) to src (rX/aX/mb/x@Vy)
+4  mask imm4, vX       Preserve the first imm4 values of vX, set other to 0
+5  load aX -> dst      Move value at addr aX into dst (rX/aX/mb/x@Vy)
+6  vload aX -> vX      Move value at addr aX into vX
+7  store src -> aX     Move src (rX/vX/aX/mb/x@Vy) to addr aX
+8  conc vX -> rX       Add all values in vX, store in rX
+9  mconc vX -> rX      Mult. all values in vX, store in rX
+A  add rX, rY -> rZ    rZ = rX + rY
+B  sub rX, rY -> rZ    rZ = rX - rY
+C  mul rX, rY -> rZ    rZ = rX * rY
+D  div rX, rY -> rZ    rZ = rX / rY
+E  extend1             Enable extended instruction set 1
+F  extend2             Enable extended instruction set 2
+
+# Extended Instruction Set 1
+
+0  vadd vX, vY -> vZ    vZ = vX + vY
+1  vsub vX, vY -> vZ    vZ = vX -vY
+2  vmul vX, vY -> vZ    vZ = vX * vY
+3  vdiv vX, vY -> vZ    vZ = vX / vY
+4  vdot vX, vY -> vZ    vZ = vX dot vY
+5  vmad vX, vY -> vZ    vZ = vX *+ vY
+6  abs src              abs src (rX/vX/aX/mb/x@Vy)
+7  relu vX              relu vX
+8  active src           src (rX/aX/x@Vy/imm4) -> ml
+9  
+A  
+B  
+C  
+D  
+E  
+F  
+
+# Extended Instruction Set 2
+
+0  jump aX/label         Unconditional jump to aX, push return address
+1  jumpz rX, aX/label    jump aX if rX is zero
+2  jumpn rX, aX/label    jump aX if rX is nonzero
+3  popf                  Pop stack into nothing
+4  return                Return; push into PC
+5  
+6  
+7  
+8  
+9  
+A  
+B  
+C  
+D  
+E  hltz rX               Halt CPU if rX is zero
+F  hlt                   Halt CPU
+
