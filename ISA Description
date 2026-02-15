@@ -7,6 +7,7 @@ mb        -> 16 bit memory bank select register
 x@Vy      -> Point x at Vy
 .label    -> Marks subroutine
 rl        -> 4 bit, sets the maximum length for vector registers
+; This is a comment!
 
 To be able to have a larger ISA than a mere 16 instructions, we use the 'extendx' instructions. 
 When used, it executes the next line like an extended instruction instead of an ordinary instruction. 
