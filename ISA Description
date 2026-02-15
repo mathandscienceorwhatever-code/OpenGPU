@@ -1,4 +1,4 @@
-# OpenTPU assembly
+# OpenGPU assembly
 
 v0 - v15  -> 16 16 by 16 bit vector registers
 r0 - r15  -> 16 16 scalar registers
