@@ -1,0 +1,10 @@
+# OpenGPU assembly
+
+v0 - v15  -> 16 64 by 64 bit vector registers
+r0 - r15  -> 16 64 scalar registers
+a0 - a15  -> 16 12 bit address registers
+mb        -> 16 bit memory bank select register
+
+To be able to have a larger ISA than a mere 16 instructions, we use the 'extend' instruction. When used, it executes the next line like an extended instruction instead of an ordinary instruction. So you don't go insane programming in OpenGPU ASM, the assembler adds extends for you.
+
+0  
