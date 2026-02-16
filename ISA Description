@@ -60,8 +60,8 @@ F
 4  return                 Return; push into PC
 5  jmpe rX, rY, aX/label  jmp aX/label if rX equals rY
 6  jmpne rX, rY, aX/label jmp aX/label if rX doesn't equal rY
-7  
-8  
+7  deport rX, imm4        Send rX across channel imm4
+8  import rX, imm4        Load channel imm4 to rX
 9  
 A  
 B  
