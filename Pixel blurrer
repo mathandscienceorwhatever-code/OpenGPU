@@ -1,0 +1,50 @@
+; Example program - pixel blurrer
+;
+; a0 - input pixels
+; a1 - output pixels
+; r0 - loop counter
+; r1 - width
+
+jmp setup
+
+.label setup
+  popf
+
+  li 100 -> a0
+  li 200 -> a1
+  li 63 -> r1 ; Start at pixel one
+  li 1 -> r0
+  li -1 -> r14
+  li 1 -> r15
+  
+  jmp loop
+
+.loop
+  popf
+
+  mov r0 -> r2 ; Load first 3 pixels
+  
+  add r0, r14 -> r13
+  index r13
+  load a0 -> r3 ; left
+  index r0
+  load a0 -> r4 ; center
+  add r0, r15 -> r13
+  index r13
+  load a0 -> r5 ; right
+
+  add r3, r4 -> r6 ; Sum pixels
+  add r6, r5 -> r6
+  
+  li 3 -> r7 ; Div by 3
+  div r6, r7 -> r6
+
+  store r6 -> a1 ; Store result
+
+  add r0, 1 -> r0 ; Next pixel
+  add a0, 1 -> a0
+  add a1, 1 -> a1
+  
+  jmpne r0, r1, loop
+
+hlt
