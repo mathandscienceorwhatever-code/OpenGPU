@@ -1,0 +1,33 @@
+; Example program - display pixels to screen 
+;
+; a0 - pixels
+; r0 - current pixel
+; r1 - pixel select
+;
+; channel 1 - pixels in, 256 different pixels
+; channel 2 - pixel select
+
+jmp .setup
+
+.setup
+  popf
+
+  li 256-> r15
+  li 1 -> r14
+  li 0 -> r1
+  li 100 -> a0
+
+  jmp .loop
+
+.loop
+  index r1
+  load a0 -> r0
+
+  deport r0, 1
+  deport r1, 2
+
+  add r1, r14 -> r1
+
+  jmpne r1, r15, .loop
+
+hlt
