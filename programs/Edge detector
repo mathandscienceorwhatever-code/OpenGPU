@@ -1,0 +1,39 @@
+; Example program - 1d sobel edge detector
+;
+; a0 - input pixels
+; a1 - output pixels
+; r0 - loop counter
+; r1 - width
+
+jmp setup
+
+.label setup
+  popf
+
+  li 100 -> a0
+  li 200 -> a1
+  li 63  -> r1
+  li 1   -> r0
+  li -1  -> r14
+  li 1   -> r15
+
+  jmp loop
+
+.label loop
+  popf
+
+  add r0, r14 -> r13 ; Left pixel
+  index r13
+  load a0 -> r3
+
+  add r0, r15 -> r13 ; Right pixel
+  index r13
+  load a0 -> r5
+
+  add r0, 1 -> r0
+  add a0, 1 -> a0
+  add a1, 1 -> a1
+
+  jmpne r0, r1, loop
+
+hlt
