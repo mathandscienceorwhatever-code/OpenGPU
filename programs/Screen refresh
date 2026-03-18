@@ -4,8 +4,9 @@
 ; r0 - current pixel
 ; r1 - pixel select
 ;
-; channel 1 - pixels in, 256 different pixels
+; channel 1 - pixels in/out, 256 different pixels
 ; channel 2 - pixel select
+; channel 3 - to screen
 
 jmp .setup
 
